@@ -21,7 +21,7 @@ while True:
     - 'sale': To record a sale (Product name, price, quantity)
     - 'purchase': To record a purchase (Product name, price, quantity)
     - 'account': To check the current account balance.
-    - 'list': To check the total inventory in the warehouse along with product unit prices and quantities.
+    - 'list': To check the total inventory in the warehouse (Product name, price, quantity)
     - 'warehouse': To check a product name and its status in the warehouse.
     - 'review': Prompt for two indices 'from' and 'to', and display all recorded operations within that range. 
     - 'end': To exit the program""")
@@ -44,10 +44,14 @@ while True:
         # Record product details onto warehouse dictionary
         # Adjust quantity of product if the product is already listed
         if sname in stock:
-            stock[sname]["quantity"] -= squantity
+            # Check if there is sufficient amount
+            if stock[sname]["quantity"] >= squantity:
+                stock[sname]["quantity"] -= squantity
+            else:
+                print(f"Insufficient quantity for sales. ")
         # Print message for user to know that the item is not in stock
         else:
-            print(f"The item {pname} is not available.")
+            print(f"The item {sname} is not available.")
         # Change account balance based on total sale price
         curr_balance += (sprice * squantity)
         # Add record of change to history list
@@ -69,16 +73,16 @@ while True:
         if pname in stock:
             stock[pname]["quantity"] += pquantity
             # Change account balance based on total sale price
-            curr_balance -= (pprice * pquantity)
-            # Add record of change to history list
-            change = str(pquantity) + " unit of " + pname + " was purchased. $" + str(pquantity * pprice) + " was spent."
-            history.append(change)
+            curr_balance -= (pprice * pquantity)    
         # Add record of new product if product not listed yet
         else:
             stock[pname] = {
               "unit_price": pprice,
               "quantity": pquantity
             }
+        # Add record of change to history list
+        change = str(pquantity) + " unit of " + pname + " was purchased. $" + str(pquantity * pprice) + " was spent."
+        history.append(change)
 
   # 'account': Display the current account balance.
     elif command == "account":
@@ -108,9 +112,14 @@ while True:
   # 'review': Prompt for two indices 'from' and 'to', and display all recorded operations within that range. If ‘from’ and ‘to’ are empty, display all recorded operations. Handle cases where 'from' and 'to' values are out of range.
     elif command == "review":
         # Prompt user to enter from and to value, print full list if no value entered
-        start = int(input("Please enter a from value: "))
-        end = int(input("Please enter a to value: "))
-        print(history)
+        # start = int(input("Please enter a from value: "))
+        # end = int(input("Please enter a to value: "))
+        # Print header
+        print("++++++++++ Operation history ++++++++++")
+        print("----------------------------------------")
+        # Print each line of history using iteration
+        for i in history:
+          print(i)
 
   # 'end': Terminate the program.
     elif command == "end":
