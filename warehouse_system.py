@@ -34,6 +34,9 @@ while True:
     if command == "balance":
         acc_change = float(input("Enter the amount to be added to the account balance, use negative number for subtraction: "))
         curr_balance += acc_change
+        # Add record of change to history list
+        change = "$" + str(acc_change) + " was added to the account. Current balance on the acc is $" + str(curr_balance) + "."
+        history.append(change)
 
   # 'sale': The program should prompt for the name of the product, its price, and quantity. Perform necessary calculations and update the account and warehouse accordingly.
     elif command == "sale":
@@ -47,16 +50,17 @@ while True:
             # Check if there is sufficient amount
             if stock[sname]["quantity"] >= squantity:
                 stock[sname]["quantity"] -= squantity
+                # Change account balance based on total sale price
+                curr_balance += (sprice * squantity)
+                # Add record of change to history list
+                change = str(squantity) + " unit of " + sname + " was sold. $" + str(squantity * sprice) + " amount was earned."
+                history.append(change)
             else:
                 print(f"Insufficient quantity for sales. ")
         # Print message for user to know that the item is not in stock
         else:
             print(f"The item {sname} is not available.")
-        # Change account balance based on total sale price
-        curr_balance += (sprice * squantity)
-        # Add record of change to history list
-        change = str(squantity) + " unit of " + sname + " was sold. $" + str(squantity * sprice) + " amount was earned."
-        history.append(change)
+        
 
   # 'purchase': The program should prompt for the name of the product, its price, and quantity. Perform necessary calculations and update the account and warehouse accordingly. Ensure that the account balance is not negative after a purchase operation.
     elif command == "purchase":
@@ -111,9 +115,13 @@ while True:
             print(f"{search_name} is not on the warehouse record.")
   # 'review': Prompt for two indices 'from' and 'to', and display all recorded operations within that range. If ‘from’ and ‘to’ are empty, display all recorded operations. Handle cases where 'from' and 'to' values are out of range.
     elif command == "review":
+        n_hist = len(history)
+        print(f"{n_hist} operation(s) recorded on history. Please enter a from and to value to filter the result.\n")
         # Prompt user to enter from and to value, print full list if no value entered
         # start = int(input("Please enter a from value: "))
         # end = int(input("Please enter a to value: "))
+        # # Splice list based on range provided
+        # filter_hist = history[start+1:end+1]
         # Print header
         print("++++++++++ Operation history ++++++++++")
         print("----------------------------------------")
