@@ -118,16 +118,44 @@ while True:
         n_hist = len(history)
         print(f"{n_hist} operation(s) recorded on history. Please enter a from and to value to filter the result.\n")
         # Prompt user to enter from and to value, print full list if no value entered
-        # start = int(input("Please enter a from value: "))
-        # end = int(input("Please enter a to value: "))
-        # # Splice list based on range provided
-        # filter_hist = history[start+1:end+1]
-        # Print header
-        print("++++++++++ Operation history ++++++++++")
-        print("----------------------------------------")
-        # Print each line of history using iteration
-        for i in history:
-          print(i)
+        start = input("Please enter a from value: ")
+        end = input("Please enter a to value: ")
+
+        if start == "" and end == "":
+            # Print header
+            print("++++++++++ Operation history ++++++++++")
+            print("----------------------------------------")
+            # Print each line of history using iteration
+            for i in history:
+                print(i)
+        elif start == "" and end != "":
+            end = int(end)
+            filter_hist = history[:end]
+            # Print header
+            print("++++++++++ Operation history ++++++++++")
+            print("----------------------------------------")
+            # Print filtered history using iteration
+            for i in filter_hist:
+                print(i)
+        elif start != "" and end == "":
+            start = int(start)
+            filter_hist = history[start-1:]
+            # Print header
+            print("++++++++++ Operation history ++++++++++")
+            print("----------------------------------------")
+            for i in filter_hist:
+                print(i)            
+        else:
+            start = int(start)
+            end = int(end)
+            # Splice list based on range provided
+            filter_hist = history[start-1:end]
+            # Print header
+            print("++++++++++ Operation history ++++++++++")
+            print("----------------------------------------")
+            for i in filter_hist:
+                print(i)
+
 
   # 'end': Terminate the program.
     elif command == "end":
